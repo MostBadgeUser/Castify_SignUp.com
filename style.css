@@ -8,93 +8,93 @@ body, h1, p, form, div, input, button, a {
 /* Basic Styling */
 body {
     font-family: 'Open Sans', sans-serif;
-    background-color: #e0e1dd; /* Light background for the login page */
+    background-color: #e0e1dd;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Full viewport height */
+    height: 100vh;
 }
 
 .login-container {
     width: 100%;
-    max-width: 400px; /* Maximum width for the login box */
-    padding: 20px; /* Padding around the container */
+    max-width: 400px;
+    padding: 20px;
 }
 
 .login-box {
-    background-color: #1b263b; /* Dark background for the box */
-    border-radius: 10px; /* Rounded corners */
-    padding: 30px 20px; /* Padding inside the box */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
-    text-align: center; /* Center text inside the box */
+    background-color: #1b263b;
+    border-radius: 10px;
+    padding: 30px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
 }
 
 .login-header img {
-    width: 150px; /* Logo width */
-    margin-bottom: 20px; /* Space below the logo */
+    width: 150px;
+    margin-bottom: 20px;
 }
 
 .login-header h1 {
-    color: #e0e1dd; /* Header text color */
-    margin-bottom: 10px; /* Space below the header */
+    color: #e0e1dd;
+    margin-bottom: 10px;
 }
 
 .login-header p {
-    color: #778da9; /* Subtitle text color */
-    margin-bottom: 20px; /* Space below the subtitle */
+    color: #778da9;
+    margin-bottom: 20px;
 }
 
 .input-group {
-    margin-bottom: 20px; /* Space between input groups */
+    margin-bottom: 20px;
 }
 
 .input-group label {
-    display: block; /* Block display for label */
-    color: #e0e1dd; /* Label text color */
-    margin-bottom: 5px; /* Space below the label */
-    text-align: left; /* Align text to the left */
+    display: block;
+    color: #e0e1dd;
+    margin-bottom: 5px;
+    text-align: left;
 }
 
 .input-group input {
-    width: 100%; /* Full width for input fields */
-    padding: 10px; /* Padding inside the input */
-    border: 1px solid #415a77; /* Border color */
-    border-radius: 5px; /* Rounded corners for input */
-    background-color: #778da9; /* Input background color */
-    color: #e0e1dd; /* Input text color */
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #415a77;
+    border-radius: 5px;
+    background-color: #778da9;
+    color: #e0e1dd;
 }
 
 .input-group input:focus {
-    outline: none; /* Remove default outline */
-    border-color: #e0e1dd; /* Change border color on focus */
+    outline: none;
+    border-color: #e0e1dd;
 }
 
 .login-btn {
-    width: 100%; /* Full width for the button */
-    background-color: #415a77; /* Button background color */
-    color: #e0e1dd; /* Button text color */
-    border: none; /* Remove default border */
-    padding: 10px; /* Padding inside the button */
-    border-radius: 5px; /* Rounded corners for button */
-    cursor: pointer; /* Change cursor on hover */
-    font-weight: 600; /* Bold text */
-    margin-bottom: 20px; /* Space below the button */
+    width: 100%;
+    background-color: #415a77;
+    color: #e0e1dd;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 20px;
 }
 
 .login-btn:hover {
-    background-color: #0d1b2a; /* Change background color on hover */
+    background-color: #0d1b2a;
 }
 
 .extra-links {
-    color: #e0e1dd; /* Color for extra links */
+    color: #e0e1dd;
 }
 
 .extra-links a {
-    text-decoration: none; /* Remove underline from links */
-    color: #e0e1dd; /* Link text color */
-    margin: 0 5px; /* Space between links */
+    text-decoration: none;
+    color: #e0e1dd;
+    margin: 0 5px;
 }
 
 .extra-links a:hover {
-    color: #778da9; /* Change link color on hover */
+    color: #778da9;
 }
