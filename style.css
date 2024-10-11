@@ -1,0 +1,135 @@
+/* General Reset */
+body, h1, p, form, div, input, button, a {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic Styling */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #e0e1dd; /* Light background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+}
+
+.account-container {
+    width: 100%;
+    max-width: 400px; /* Maximum width for the account box */
+    padding: 20px;
+}
+
+.account-box {
+    background-color: #1b263b; /* Dark background for the account box */
+    border-radius: 15px; /* Rounded corners */
+    padding: 40px 30px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    text-align: center; /* Center align text */
+}
+
+.account-header img {
+    width: 150px; /* Logo width */
+    margin-bottom: 20px; /* Space below the logo */
+}
+
+.account-header h1 {
+    color: #e0e1dd; /* Header text color */
+    margin-bottom: 10px; /* Space below header */
+    font-size: 24px; /* Header font size */
+    font-weight: 600; /* Font weight */
+}
+
+.account-header p {
+    color: #778da9; /* Subheader text color */
+    margin-bottom: 20px; /* Space below subheader */
+    font-size: 16px; /* Subheader font size */
+}
+
+.input-group {
+    margin-bottom: 20px; /* Space between input groups */
+}
+
+.input-group label {
+    display: block; /* Block display for label */
+    color: #e0e1dd; /* Label text color */
+    margin-bottom: 5px; /* Space below label */
+    text-align: left;
+    font-weight: 600; /* Bold font for labels */
+}
+
+.input-group input {
+    width: 100%; /* Full width inputs */
+    padding: 12px; /* Padding for inputs */
+    border: 1px solid #415a77; /* Border color */
+    border-radius: 8px; /* Rounded corners for inputs */
+    background-color: #778da9; /* Input background color */
+    color: #e0e1dd; /* Input text color */
+    transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+.input-group input:focus {
+    outline: none; /* Remove outline on focus */
+    border-color: #e0e1dd; /* Change border color on focus */
+}
+
+.create-btn {
+    width: 100%; /* Full width button */
+    background-color: #415a77; /* Button background color */
+    color: #e0e1dd; /* Button text color */
+    border: none; /* Remove default border */
+    padding: 12px; /* Button padding */
+    border-radius: 8px; /* Rounded corners for button */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-weight: 600; /* Bold font for button */
+    font-size: 16px; /* Button font size */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.create-btn:hover {
+    background-color: #0d1b2a; /* Darker background on hover */
+}
+
+.google-login {
+    margin: 20px 0; /* Margin for Google login button */
+}
+
+.google-btn {
+    width: 100%; /* Full width button */
+    background-color: #db4437; /* Google Red */
+    color: white; /* Text color for Google button */
+    border: none; /* Remove default border */
+    padding: 12px; /* Button padding */
+    border-radius: 8px; /* Rounded corners for button */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-weight: 600; /* Bold font for button */
+    font-size: 16px; /* Button font size */
+    display: flex; /* Flex for centering content */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.google-btn:hover {
+    background-color: #c1351d; /* Darker Red on hover */
+}
+
+.google-btn i {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+.extra-links {
+    color: #e0e1dd; /* Link text color */
+    margin-top: 15px; /* Space above extra links */
+}
+
+.extra-links a {
+    text-decoration: none; /* Remove underline from links */
+    color: #e0e1dd; /* Link color */
+    font-weight: 600; /* Bold font for links */
+}
+
+.extra-links a:hover {
+    color: #778da9; /* Change link color on hover */
+}

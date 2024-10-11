@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Castify Create Account </title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Castify - Create Account</title>
+    <link rel="stylesheet" href="create-account.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
+</head>
+<body>
+    <div class="account-container">
+        <div class="account-box">
+            <div class="account-header">
+                <img src="https://i.ibb.co/nCqS9g0/rushfordclean-1.png" alt="Castify Logo">
+                <h1>Create Your Account</h1>
+                <p>Join us and start enjoying your favorite videos!</p>
+            </div>
+            <!-- Only one form should exist -->
+            <form id="registrationForm">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="create-btn">Create Account</button>
+
+                <!-- Google Login Button -->
+                <div class="google-login">
+                    <button type="button" class="google-btn">
+                        <i class="fab fa-google"></i> Sign up with Google
+                    </button>
+                </div>
+
+                <div class="extra-links">
+                    <p>Already have an account? <a href="login.html">Login here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize EmailJS
+        (function(){
+            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+        })();
+
+        // Check if user is already registered
+        function isUserRegistered(username) {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            return users.some(user => user.username === username);
+        }
+
+        // Register user and store in localStorage
+        function registerUser(username, email, password) {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            users.push({ username, email, password });
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', username); // Save the registered username
+        }
+
+        // Send welcome email using EmailJS
+        function sendWelcomeEmail(email, username) {
+            emailjs.send("service_eaz5mxs", "template_your_template_id", {
+                to_email: email,
+                username: username
+            })
+            .then(function(response) {
+                console.log('Email sent successfully:', response);
+            }, function(error) {
+                console.error('Failed to send email:', error);
+            });
+        }
+
+        // Handle registration form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const registrationForm = document.getElementById('registrationForm');
+            registrationForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                if (!isUserRegistered(username)) {
+                    registerUser(username, email, password);
+                    sendWelcomeEmail(email, username); // Send welcome email
+                    alert('Registration successful! Redirecting...');
+                    window.location.href = 'https://mostbadgeuser.github.io/Castify_Welcome.com/';
+                } else {
+                    alert('Username already taken!');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>
