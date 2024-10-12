@@ -9,24 +9,112 @@
 <body>
 <!-- partial:index.partial.html -->
 <!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>CodePen - Castify login </title>
-  <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Castify - Login</title>
-    <link rel="stylesheet" href="login.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #0d1b2a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #1b263b;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .login-header img {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .login-header h1 {
+            color: #e0e1dd;
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #e0e1dd;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #415a77;
+            border-radius: 5px;
+            background-color: #778da9;
+            color: #e0e1dd;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #415a77;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .extra-links {
+            margin-top: 10px;
+            color: #e0e1dd;
+        }
+
+        #registerContainer {
+            display: none;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0d1b2a;
+        }
+    </style>
+
+    <!-- Firebase Scripts -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDTqZeTMNIAjBt9ArxAVG3HWL0zXiU9GnM",
+            authDomain: "castify-d259d.firebaseapp.com",
+            projectId: "castify-d259d",
+            storageBucket: "castify-d259d.appspot.com",
+            messagingSenderId: "809904193970",
+            appId: "1:809904193970:web:af4a99b6e3b8738adc64ab"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const db = getFirestore();
+    </script>
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-box">
@@ -46,39 +134,82 @@
                 </div>
                 <button type="submit" class="login-btn">Login</button>
                 <div class="extra-links">
-                    <a href="#">Forgot Password?</a> | <a href="create-account.html">Create an Account</a>
+                    <a href="#" id="showRegister">Create an Account</a>
                 </div>
             </form>
+
+            <div id="registerContainer">
+                <h2>Create an Account</h2>
+                <div class="input-group">
+                    <label for="newUsername">Username</label>
+                    <input type="text" id="newUsername" required>
+                </div>
+                <div class="input-group">
+                    <label for="newPassword">Password</label>
+                    <input type="password" id="newPassword" required>
+                </div>
+                <button id="registerBtn">Register</button>
+                <button id="cancelRegister" style="background-color: #d9534f;">Cancel</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Check if user is registered and validate login
-        function validateUser(username, password) {
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            return users.some(user => user.username === username && user.password === password);
-        }
+        const loginForm = document.getElementById('loginForm');
+        const registerContainer = document.getElementById('registerContainer');
+        const showRegister = document.getElementById('showRegister');
+        const registerBtn = document.getElementById('registerBtn');
+        const cancelRegister = document.getElementById('cancelRegister');
 
-        // Handle login form submission
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
+        // Toggle between login and register views
+        showRegister.addEventListener('click', () => {
+            loginForm.style.display = 'none';
+            registerContainer.style.display = 'block';
+        });
 
+        cancelRegister.addEventListener('click', () => {
+            registerContainer.style.display = 'none';
+            loginForm.style.display = 'block';
+        });
+
+        // Register new user
+        registerBtn.addEventListener('click', async () => {
+            const username = document.getElementById('newUsername').value;
+            const password = document.getElementById('newPassword').value;
+            const email = `${username}@castify.com`; // Fake email for Firebase
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await setDoc(doc(db, "users", username), { uid: userCredential.user.uid, email });
+                alert('Registration successful!');
+                registerContainer.style.display = 'none';
+                loginForm.style.display = 'block';
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
+
+        // Login existing user
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            if (validateUser(username, password)) {
-                alert('Login successful! Redirecting...');
-                window.location.href = 'https://mostbadgeuser.github.io/Castify1.com/'; // Redirect URL
-            } else {
-                alert('Invalid username or password. Please try again.');
+            try {
+                const userDoc = await getDoc(doc(db, "users", username));
+                if (userDoc.exists()) {
+                    const email = userDoc.data().email;
+                    await signInWithEmailAndPassword(auth, email, password);
+                    alert('Login successful! Redirecting...');
+                    window.location.href = 'https://mostbadgeuser.github.io/Castify1.com/';
+                } else {
+                    alert('Invalid username or password.');
+                }
+            } catch (error) {
+                alert('Invalid username or password.');
             }
         });
     </script>
-</body>
-</html>
-<!-- partial -->
-  <script  src="./script.js"></script>
-
 </body>
 </html>
 <!-- partial -->
