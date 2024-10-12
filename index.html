@@ -13,26 +13,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Castify - Login</title>
+    <title>Castify - Login & Create Account</title>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Basic Styling */
+        /* CSS Styling */
+        body, h1, p, form, div, input, button, a {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Open Sans', sans-serif;
-            background-color: #0d1b2a;
+            background-color: #e0e1dd;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
         }
 
         .login-container {
             width: 100%;
             max-width: 400px;
+            padding: 20px;
+        }
+
+        .login-box {
             background-color: #1b263b;
-            padding: 30px;
             border-radius: 10px;
+            padding: 30px 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
@@ -48,13 +57,14 @@
         }
 
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .input-group label {
             display: block;
             color: #e0e1dd;
             margin-bottom: 5px;
+            text-align: left;
         }
 
         .input-group input {
@@ -66,58 +76,50 @@
             color: #e0e1dd;
         }
 
-        button {
+        .input-group input:focus {
+            outline: none;
+            border-color: #e0e1dd;
+        }
+
+        .login-btn {
             width: 100%;
-            padding: 10px;
             background-color: #415a77;
-            color: white;
+            color: #e0e1dd;
             border: none;
+            padding: 10px;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .login-btn:hover {
+            background-color: #0d1b2a;
         }
 
         .extra-links {
-            margin-top: 10px;
             color: #e0e1dd;
         }
 
-        #registerContainer {
-            display: none;
-            margin-top: 20px;
+        .extra-links a {
+            text-decoration: none;
+            color: #e0e1dd;
+            margin: 0 5px;
         }
 
-        button:hover {
-            background-color: #0d1b2a;
+        .extra-links a:hover {
+            color: #778da9;
+        }
+
+        /* Hide elements initially */
+        .hidden {
+            display: none;
         }
     </style>
-
-    <!-- Firebase Scripts -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDTqZeTMNIAjBt9ArxAVG3HWL0zXiU9GnM",
-            authDomain: "castify-d259d.firebaseapp.com",
-            projectId: "castify-d259d",
-            storageBucket: "castify-d259d.appspot.com",
-            messagingSenderId: "809904193970",
-            appId: "1:809904193970:web:af4a99b6e3b8738adc64ab"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth();
-        const db = getFirestore();
-    </script>
 </head>
-
 <body>
     <div class="login-container">
-        <div class="login-box">
+        <div class="login-box" id="loginBox">
             <div class="login-header">
                 <img src="https://i.ibb.co/nCqS9g0/rushfordclean-1.png" alt="Castify Logo">
                 <h1>Welcome Back!</h1>
@@ -137,83 +139,110 @@
                     <a href="#" id="showRegister">Create an Account</a>
                 </div>
             </form>
+        </div>
 
-            <div id="registerContainer">
-                <h2>Create an Account</h2>
+        <div class="login-box hidden" id="registerBox">
+            <h2>Create an Account</h2>
+            <form id="registerForm">
                 <div class="input-group">
                     <label for="newUsername">Username</label>
                     <input type="text" id="newUsername" required>
                 </div>
                 <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="input-group">
                     <label for="newPassword">Password</label>
                     <input type="password" id="newPassword" required>
                 </div>
-                <button id="registerBtn">Register</button>
-                <button id="cancelRegister" style="background-color: #d9534f;">Cancel</button>
-            </div>
+                <button type="submit" id="registerBtn" class="login-btn">Register</button>
+                <button id="cancelRegister" class="login-btn" style="background-color: #d9534f;">Cancel</button>
+            </form>
         </div>
     </div>
 
-    <script>
-        const loginForm = document.getElementById('loginForm');
-        const registerContainer = document.getElementById('registerContainer');
-        const showRegister = document.getElementById('showRegister');
-        const registerBtn = document.getElementById('registerBtn');
-        const cancelRegister = document.getElementById('cancelRegister');
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-        // Toggle between login and register views
-        showRegister.addEventListener('click', () => {
-            loginForm.style.display = 'none';
-            registerContainer.style.display = 'block';
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDTqZeTMNIAjBt9ArxAVG3HWL0zXiU9GnM",
+            authDomain: "castify-d259d.firebaseapp.com",
+            projectId: "castify-d259d",
+            storageBucket: "castify-d259d.appspot.com",
+            messagingSenderId: "809904193970",
+            appId: "1:809904193970:web:af4a99b6e3b8738adc64ab"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Show registration form
+        document.getElementById('showRegister').addEventListener('click', function() {
+            document.getElementById('registerBox').classList.remove('hidden');
+            document.getElementById('loginBox').classList.add('hidden');
         });
 
-        cancelRegister.addEventListener('click', () => {
-            registerContainer.style.display = 'none';
-            loginForm.style.display = 'block';
+        // Cancel registration
+        document.getElementById('cancelRegister').addEventListener('click', function() {
+            document.getElementById('registerBox').classList.add('hidden');
+            document.getElementById('loginBox').classList.remove('hidden');
         });
 
-        // Register new user
-        registerBtn.addEventListener('click', async () => {
-            const username = document.getElementById('newUsername').value;
-            const password = document.getElementById('newPassword').value;
-            const email = `${username}@castify.com`; // Fake email for Firebase
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
 
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await setDoc(doc(db, "users", username), { uid: userCredential.user.uid, email });
-                alert('Registration successful!');
-                registerContainer.style.display = 'none';
-                loginForm.style.display = 'block';
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        });
-
-        // Login existing user
-        loginForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
+            // Validate user credentials
+            const usersRef = collection(db, 'users');
+            const q = query(usersRef, where("username", "==", username), where("password", "==", password));
+            const querySnapshot = await getDocs(q);
+
+            if (querySnapshot.empty) {
+                alert('Invalid username or password. Please try again.');
+            } else {
+                localStorage.setItem('currentUser', username); // Save current user in localStorage
+                alert('Login successful! Redirecting...');
+                window.location.href = 'https://mostbadgeuser.github.io/Castify1.com/';
+            }
+        });
+
+        // Handle registration
+        document.getElementById('registerForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const newUsername = document.getElementById('newUsername').value;
+            const email = document.getElementById('email').value;
+            const newPassword = document.getElementById('newPassword').value;
+
             try {
-                const userDoc = await getDoc(doc(db, "users", username));
-                if (userDoc.exists()) {
-                    const email = userDoc.data().email;
-                    await signInWithEmailAndPassword(auth, email, password);
-                    alert('Login successful! Redirecting...');
-                    window.location.href = 'https://mostbadgeuser.github.io/Castify1.com/';
-                } else {
-                    alert('Invalid username or password.');
-                }
+                // Add user to Firestore
+                await addDoc(collection(db, "users"), {
+                    username: newUsername,
+                    email: email,
+                    password: newPassword
+                });
+                alert('Registration successful! You can now log in.');
+                document.getElementById('registerBox').classList.add('hidden');
+                document.getElementById('loginForm').reset();
+                document.getElementById('loginBox').classList.remove('hidden');
             } catch (error) {
-                alert('Invalid username or password.');
+                console.error("Error adding document: ", error);
+                alert('Error registering user. Please try again.');
             }
         });
     </script>
 </body>
 </html>
 <!-- partial -->
-  <script  src="./script.js"></script>
+  <script type="module" src="./script.js"></script>
 
 </body>
 </html>
