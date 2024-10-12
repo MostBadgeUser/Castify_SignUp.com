@@ -1,164 +1,73 @@
-/* General Reset */
-body, h1, h2, h3, p, ul, li, a, button {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Basic Styling */
 body {
     font-family: 'Open Sans', sans-serif;
-    background-color: #e0e1dd;
-    color: #0d1b2a;
+    background-color: #0d1b2a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 10px;
-}
-
-/* Header Styling */
-header {
+    width: 100%;
+    max-width: 400px;
     background-color: #1b263b;
-    padding: 20px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.header img {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.header h1 {
     color: #e0e1dd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    margin-bottom: 10px;
 }
 
-header .logo img {
-    max-height: 50px;
-    cursor: pointer;
-}
-
-header nav {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap; /* Allows wrapping for smaller screens */
-}
-
-header nav ul {
-    display: flex;
-    list-style: none;
-}
-
-header nav ul li {
-    margin: 0 15px;
-}
-
-header nav ul li a {
-    color: #e0e1dd;
-    text-decoration: none;
-}
-
-header .search-container {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-}
-
-header .search-input {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #415a77;
-    margin-right: 5px;
-}
-
-header .search-button {
-    background-color: #415a77;
-    color: #e0e1dd;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-header .profile {
-    display: flex;
-    align-items: center;
-}
-
-header .profile-pic {
-    width: 20px; /* Adjusted to 20px */
-    height: 20px; /* Adjusted to 20px */
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-header .username {
-    color: #e0e1dd;
-    margin-right: 15px;
-}
-
-header .logout-button {
-    background-color: #e0e1dd;
-    color: #1b263b;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    text-decoration: none;
-}
-
-/* Recently Viewed & Watched Sections */
-.recently-viewed, .recently-watched {
-    background-color: #fff;
-    margin-top: 20px;
-    padding: 20px;
-    border: 1px solid #415a77;
-    border-radius: 5px; /* Added rounded corners for a softer look */
-}
-
-.recently-viewed h2, .recently-watched h2 {
+.input-group {
     margin-bottom: 15px;
-    color: #1b263b;
 }
 
-.video-thumbnails {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap; /* Allows wrapping of video items */
-}
-
-.video-item {
-    background-color: #778da9;
-    text-align: center;
-    border-radius: 5px;
+.input-group label {
+    display: block;
     color: #e0e1dd;
-    flex: 1 1 calc(33.33% - 10px); /* Adjust to 3 items per row on larger screens */
-    min-width: 250px; /* Minimum width to prevent too small on smaller screens */
-    height: 150px; /* Fixed height for video item */
-    display: flex; /* Enable flexbox for centering */
-    justify-content: center; /* Center content horizontally */
-    align-items: center; /* Center content vertically */
+    margin-bottom: 5px;
 }
 
-/* Featured Video Section */
-.featured {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.featured-video, .upload {
-    flex: 1; /* Allows equal sizing */
-    background-color: #fff;
-    margin-right: 10px;
-    padding: 20px;
+.input-group input {
+    width: 100%;
+    padding: 10px;
     border: 1px solid #415a77;
     border-radius: 5px;
-}
-
-.featured-video {
-    margin-right: 0; /* No margin on the last item */
-}
-
-/* Footer */
-footer {
-    margin-top: 20px;
-    text-align: center;
-    padding: 20px;
-    background-color: #1b263b;
+    background-color: #778da9;
     color: #e0e1dd;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #415a77;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.extra-links {
+    margin-top: 10px;
+    color: #e0e1dd;
+}
+
+#registerContainer {
+    display: none;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #0d1b2a;
 }
