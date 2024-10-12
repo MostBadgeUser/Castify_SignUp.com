@@ -13,254 +13,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Castify - Login & Create Account</title>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        /* CSS Styling */
-        body, h1, p, form, div, input, button, a {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Open Sans', sans-serif;
-            background-color: #e0e1dd;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-        }
-
-        .login-box {
-            background-color: #1b263b;
-            border-radius: 10px;
-            padding: 30px 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
-        .login-header img {
-            width: 150px;
-            margin-bottom: 20px;
-        }
-
-        .login-header h1 {
-            color: #e0e1dd;
-            margin-bottom: 10px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        .input-group label {
-            display: block;
-            color: #e0e1dd;
-            margin-bottom: 5px;
-            text-align: left;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #415a77;
-            border-radius: 5px;
-            background-color: #778da9;
-            color: #e0e1dd;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #e0e1dd;
-        }
-
-        .login-btn {
-            width: 100%;
-            background-color: #415a77;
-            color: #e0e1dd;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .login-btn:hover {
-            background-color: #0d1b2a;
-        }
-
-        .extra-links {
-            color: #e0e1dd;
-        }
-
-        .extra-links a {
-            text-decoration: none;
-            color: #e0e1dd;
-            margin: 0 5px;
-        }
-
-        .extra-links a:hover {
-            color: #778da9;
-        }
-
-        /* Hide elements initially */
-        .hidden {
-            display: none;
-        }
-    </style>
-    <!-- Include EmailJS SDK -->
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <title>Castify Login</title>
+    <script type="module" src="app.js" defer></script> <!-- Link to your JavaScript file -->
+    <link rel="stylesheet" href="style.css"> <!-- Optional CSS file -->
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-box" id="loginBox">
-            <div class="login-header">
-                <img src="https://i.ibb.co/nCqS9g0/rushfordclean-1.png" alt="Castify Logo">
-                <h1>Welcome Back!</h1>
-                <p>Please login to your account</p>
-            </div>
-            <form id="loginForm">
-                <div class="input-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" required>
-                </div>
-                <div class="input-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit" class="login-btn">Login</button>
-                <div class="extra-links">
-                    <a href="#" id="showRegister">Create an Account</a>
-                </div>
-            </form>
-        </div>
-
-        <div class="login-box hidden" id="registerBox">
-            <h2>Create an Account</h2>
-            <form id="registerForm">
-                <div class="input-group">
-                    <label for="newUsername">Username</label>
-                    <input type="text" id="newUsername" required>
-                </div>
-                <div class="input-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" required>
-                </div>
-                <div class="input-group">
-                    <label for="newPassword">Password</label>
-                    <input type="password" id="newPassword" required>
-                </div>
-                <button type="submit" id="registerBtn" class="login-btn">Register</button>
-                <button type="button" id="cancelRegister" class="login-btn" style="background-color: #d9534f;">Cancel</button>
-            </form>
-        </div>
+    <div id="loginForm">
+        <h2>Login</h2>
+        <input type="text" id="loginNickname" placeholder="Username or Email">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button id="loginBtn">Login</button>
+        <p>Don't have an account? <span id="showRegister">Register</span></p>
     </div>
 
-    <script type="module">
-        // Import Firebase modules
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDTqZeTMNIAjBt9ArxAVG3HWL0zXiU9GnM",
-            authDomain: "castify-d259d.firebaseapp.com",
-            projectId: "castify-d259d",
-            storageBucket: "castify-d259d.appspot.com",
-            messagingSenderId: "809904193970",
-            appId: "1:809904193970:web:af4a99b6e3b8738adc64ab"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Show registration form
-        document.getElementById('showRegister').addEventListener('click', function() {
-            document.getElementById('registerBox').classList.remove('hidden');
-            document.getElementById('loginBox').classList.add('hidden');
-        });
-
-        // Cancel registration
-        document.getElementById('cancelRegister').addEventListener('click', function() {
-            document.getElementById('registerBox').classList.add('hidden');
-            document.getElementById('loginBox').classList.remove('hidden');
-        });
-
-        // Handle login form submission
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // Validate user credentials
-            const usersRef = collection(db, 'users');
-            const q = query(usersRef, where("username", "==", username), where("password", "==", password));
-            const querySnapshot = await getDocs(q);
-
-            if (querySnapshot.empty) {
-                alert('Invalid username or password. Please try again.');
-            } else {
-                localStorage.setItem('currentUser', username); // Save current user in localStorage
-                alert('Login successful! Redirecting...');
-                window.location.href = 'https://mostbadgeuser.github.io/Castify1.com/';
-            }
-        });
-
-        // Handle registration
-        document.getElementById('registerForm').addEventListener('submit', async function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            const newUsername = document.getElementById('newUsername').value;
-            const email = document.getElementById('email').value;
-            const newPassword = document.getElementById('newPassword').value;
-
-            try {
-                // Add user to Firestore
-                await addDoc(collection(db, "users"), {
-                    username: newUsername,
-                    email: email,
-                    password: newPassword
-                });
-                
-                // Send a confirmation email using EmailJS
-                emailjs.init('service_eaz5mxs'); // Initialize EmailJS with your service ID
-                const templateParams = {
-                    username: newUsername,
-                    email: email
-                };
-
-                emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
-                    .then(() => {
-                        alert('Registration successful! A confirmation email has been sent to your email address. You can now log in.');
-                        document.getElementById('registerBox').classList.add('hidden');
-                        document.getElementById('loginForm').reset();
-                        document.getElementById('loginBox').classList.remove('hidden');
-                    })
-                    .catch((error) => {
-                        console.error("EmailJS error:", error);
-                        alert('Registration successful, but failed to send confirmation email. Please check your email later.');
-                    });
-            } catch (error) {
-                console.error("Error adding document: ", error);
-                alert('Error registering user. Please try again.');
-            }
-        });
-
-        // Initialize EmailJS
-        (function(){
-            emailjs.init("YOUR_USER_ID"); // Replace with your EmailJS user ID
-        })();
-    </script>
+    <div id="registerContainer" style="display:none;">
+        <h2>Register</h2>
+        <input type="text" id="registerUsername" placeholder="Username">
+        <input type="email" id="registerEmail" placeholder="Email">
+        <input type="password" id="registerPassword" placeholder="Password">
+        <button id="registerBtn">Register</button>
+        <button id="cancelRegister">Cancel</button>
+    </div>
 </body>
 </html>
 <!-- partial -->
