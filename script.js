@@ -1,93 +1,61 @@
-window.addEventListener("load", () => {
-  const elementsToAnimate = [
-    "#form-title",
-    "#email-input",
-    "#password-input",
-    "#remember-me",
-    "#forgot-password",
-    "#sign-in-button",
-    "#create-account-button",
-  ];
+// Function to save user to local storage
+function saveUser(username, password) {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    users.push({ username, password });
+    localStorage.setItem('users', JSON.stringify(users));
+}
 
-  gsap.from(elementsToAnimate, {
-    opacity: 0,
-    y: -30,
-    duration: 0.6,
-    ease: "power2.out",
-    stagger: 0.2,
-  });
+// Function to validate user login
+function validateUser(username, password) {
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    return users.some(user => user.username === username && user.password === password);
+}
 
-  // Input fields animation on focus
-  document.querySelectorAll("input").forEach((input) => {
-    input.addEventListener("focus", () => {
-      gsap.to(input, {
-        scale: 1.05,
-        boxShadow: "0px 4px 20px rgba(0, 128, 128, 0.4)",
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    });
+// Handle login form submission
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-    input.addEventListener("blur", () => {
-      gsap.to(input, {
-        scale: 1,
-        boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)",
-        duration: 0.3,
-        ease: "power2.in",
-      });
-    });
-  });
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
 
-  // Forgot Password link animation on click
-  const forgotPasswordLink = document.querySelector("#forgot-password");
-  forgotPasswordLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    gsap.to(forgotPasswordLink, {
-      color: "#ff6347",
-      duration: 0.3,
-      ease: "power2.out",
-      yoyo: true,
-      repeat: 1,
-    });
-  });
+    if (validateUser(username, password)) {
+        alert('Login successful! Redirecting...');
+        localStorage.setItem('currentUser', username);
+        window.location.href = 'https://mostbadgeuser.github.io/Castify1.com/'; // Redirect URL
+    } else {
+        alert('Invalid username or password. Please try again.');
+    }
+});
 
-  // Button hover animation (Sign In)
-  const signInButton = document.querySelector("#sign-in-button button");
-  signInButton.addEventListener("mouseenter", () => {
-    gsap.to(signInButton, {
-      scale: 1.1,
-      boxShadow: "0px 4px 20px rgba(0, 128, 128, 0.4)",
-      duration: 0.3,
-      ease: "power2.out",
-    });
-  });
+// Handle signup form submission
+document.getElementById('signupForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-  signInButton.addEventListener("mouseleave", () => {
-    gsap.to(signInButton, {
-      scale: 1,
-      boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)",
-      duration: 0.3,
-      ease: "power2.in",
-    });
-  });
+    const username = document.getElementById('signupUsername').value;
+    const password = document.getElementById('signupPassword').value;
 
-  // Button hover animation (Create Account)
-  const createAccountButton = document.querySelector("#create-account-button button");
-  createAccountButton.addEventListener("mouseenter", () => {
-    gsap.to(createAccountButton, {
-      scale: 1.05,
-      boxShadow: "0px 4px 15px rgba(0, 128, 128, 0.4)",
-      duration: 0.3,
-      ease: "power2.out",
-    });
-  });
+    // Check if the username already exists
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const userExists = users.some(user => user.username === username);
 
-  createAccountButton.addEventListener("mouseleave", () => {
-    gsap.to(createAccountButton, {
-      scale: 1,
-      boxShadow: "0px 0px 0px rgba(0, 0, 0, 0)",
-      duration: 0.3,
-      ease: "power2.in",
-    });
-  });
+    if (userExists) {
+        alert('Username already exists. Please choose a different username.');
+    } else {
+        saveUser(username, password);
+        alert('Account created successfully! You can now log in.');
+        document.getElementById('signupBox').style.display = 'none';
+        document.getElementById('loginBox').style.display = 'block';
+    }
+});
+
+// Show signup form
+document.getElementById('showSignup').addEventListener('click', function() {
+    document.getElementById('loginBox').style.display = 'none';
+    document.getElementById('signupBox').style.display = 'block';
+});
+
+// Show login form
+document.getElementById('showLogin').addEventListener('click', function() {
+    document.getElementById('signupBox').style.display = 'none';
+    document.getElementById('loginBox').style.display = 'block';
 });

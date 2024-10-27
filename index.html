@@ -10,357 +10,61 @@
 <!-- partial:index.partial.html -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stunning Login & Create Account</title>
-
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- GSAP CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap");
-
-      body {
-        margin: 0;
-        font-family: "Space Grotesk", sans-serif;
-        min-height: 100vh;
-        overflow: hidden;
-        background: linear-gradient(to bottom, #87cefa, #f0e68c);
-      }
-
-      /* Sky gradient with sunrise effect */
-      .sky {
-        background: linear-gradient(to top, #ffaf7b, #ffffff, #87cefa, #4169e1);
-        height: 100vh;
-        width: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: -1;
-        overflow: hidden;
-      }
-
-      /* Cloud styling with more detail */
-      .cloud {
-        background: radial-gradient(circle at center, white 50%, rgba(255, 255, 255, 0.8));
-        border-radius: 50%;
-        position: absolute;
-        opacity: 0.8;
-        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-      }
-
-      /* Cloud shapes and sizes */
-      .cloud1 {
-        width: 160px;
-        height: 80px;
-        top: 100px;
-        left: -300px;
-        animation: moveClouds1 60s linear infinite;
-      }
-
-      .cloud2 {
-        width: 200px;
-        height: 120px;
-        top: 300px;
-        left: -500px;
-        animation: moveClouds2 80s linear infinite;
-      }
-
-      .cloud3 {
-        width: 140px;
-        height: 60px;
-        top: 400px;
-        left: -600px;
-        animation: moveClouds3 100s linear infinite;
-      }
-
-      /* Additional clouds to enhance the look */
-      .cloud4 {
-        width: 180px;
-        height: 90px;
-        top: 150px;
-        left: -250px;
-        animation: moveClouds4 70s linear infinite;
-      }
-
-      .cloud5 {
-        width: 220px;
-        height: 110px;
-        top: 500px;
-        left: -700px;
-        animation: moveClouds5 90s linear infinite;
-      }
-
-      /* Animation for clouds */
-      @keyframes moveClouds1 {
-        0% {
-          left: -300px;
-        }
-        100% {
-          left: 110%;
-        }
-      }
-
-      @keyframes moveClouds2 {
-        0% {
-          left: -500px;
-        }
-        100% {
-          left: 110%;
-        }
-      }
-
-      @keyframes moveClouds3 {
-        0% {
-          left: -600px;
-        }
-        100% {
-          left: 110%;
-        }
-      }
-
-      @keyframes moveClouds4 {
-        0% {
-          left: -250px;
-        }
-        100% {
-          left: 110%;
-        }
-      }
-
-      @keyframes moveClouds5 {
-        0% {
-          left: -700px;
-        }
-        100% {
-          left: 110%;
-        }
-      }
-
-      /* Subtle sparkle effect in the background */
-      .stars {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 5%, rgba(255, 255, 255, 0) 10%);
-        background-size: 100px 100px;
-        animation: twinkle 5s infinite ease-in-out;
-        z-index: -2;
-      }
-
-      @keyframes twinkle {
-        0% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.5;
-        }
-        100% {
-          opacity: 1;
-        }
-      }
-
-      /* Popup styling */
-      .popup {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100%;
-        max-width: 400px;
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-        display: none;
-        z-index: 100;
-      }
-
-      /* Overlay styling */
-      #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: none;
-        z-index: 99;
-      }
-
-      input:focus {
-        outline: none;
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="sky"></div>
-    <div class="cloud cloud1"></div>
-    <div class="cloud cloud2"></div>
-    <div class="cloud cloud3"></div>
-    <div class="cloud cloud4"></div>
-    <div class="cloud cloud5"></div>
-    <div class="stars"></div>
-
-    <div id="login-form" class="w-full max-w-md mx-auto mt-20 relative z-10">
-      <div class="bg-white shadow-xl rounded-xl p-10 relative">
-        <h2 class="text-3xl uppercase font-bold text-center mb-8 text-gray-800">Sign In</h2>
-
-        <form action="#" method="POST" class="space-y-6">
-          <div>
-            <label for="username" class="block text-sm text-gray-600 mb-2">Username</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              required
-              class="w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm"
-              placeholder="Enter your username"
-            />
-          </div>
-
-          <div>
-            <label for="password" class="block text-sm text-gray-600 mb-2">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              required
-              class="w-full px-4 py-3 border border-gray-200 rounded-lg shadow-sm"
-              placeholder="Enter your password"
-            />
-          </div>
-
-          <button
-            type="submit"
-            class="w-full py-3 bg-teal-600 text-white text-lg rounded-lg hover:bg-teal-700 transition duration-300 shadow-lg"
-          >
-            Sign In
-          </button>
-
-          <div class="mt-4 flex justify-between items-center">
-            <button
-              id="open-create-account"
-              type="button"
-              class="py-2 px-4 bg-gray-100 text-teal-600 rounded-lg border border-teal-600 hover:bg-gray-200 transition duration-300"
-            >
-              Create Account
-            </button>
-
-            <button
-              id="help-button"
-              type="button"
-              class="w-8 h-8 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300 flex items-center justify-center text-sm"
-            >
-              ?
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <div id="overlay"></div>
-
-    <div id="create-account-popup" class="popup">
-      <h2 class="text-2xl font-bold text-center mb-6">Create Account</h2>
-      <form action="#" method="POST" class="space-y-4">
-        <div>
-          <label for="new-username" class="block text-sm text-gray-600 mb-2">Username</label>
-          <input
-            type="text"
-            id="new-username"
-            name="username"
-            required
-            class="w-full px-4 py-3 border border-gray-200 rounded-lg"
-            placeholder="Enter your username"
-          />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Castify - Login & Signup</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="form-box" id="loginBox">
+            <div class="header">
+                <img src="https://i.ibb.co/nCqS9g0/rushfordclean-1.png" alt="Castify Logo">
+                <h1>Welcome Back!</h1>
+                <p>Please login to your account</p>
+            </div>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <div class="extra-links">
+                    <a href="#" id="showSignup">Create an Account</a>
+                </div>
+            </form>
         </div>
 
-        <div>
-          <label for="new-email" class="block text-sm text-gray-600 mb-2">Email</label>
-          <input
-            type="email"
-            id="new-email"
-            name="email"
-            required
-            class="w-full px-4 py-3 border border-gray-200 rounded-lg"
-            placeholder="Enter your email"
-          />
+        <div class="form-box" id="signupBox" style="display: none;">
+            <div class="header">
+                <h1>Create an Account</h1>
+                <p>Please fill in the details below</p>
+            </div>
+            <form id="signupForm">
+                <div class="input-group">
+                    <label for="signupUsername">Username</label>
+                    <input type="text" id="signupUsername" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" name="password" required>
+                </div>
+                <button type="submit" class="btn">Sign Up</button>
+                <div class="extra-links">
+                    <a href="#" id="showLogin">Already have an account?</a>
+                </div>
+            </form>
         </div>
-
-        <div>
-          <label for="new-password" class="block text-sm text-gray-600 mb-2">Password</label>
-          <input
-            type="password"
-            id="new-password"
-            name="password"
-            required
-            class="w-full px-4 py-3 border border-gray-200 rounded-lg"
-            placeholder="Enter your password"
-          />
-        </div>
-
-        <button
-          type="submit"
-          class="w-full py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition duration-300"
-        >
-          Register
-        </button>
-      </form>
     </div>
 
-    <div id="help-popup" class="popup">
-      <h2 class="text-xl font-bold text-center mb-4">Need Help?</h2>
-      <p class="text-sm text-gray-600 mb-6">
-        To register, click the <em>Create Account</em> button and fill in the fields for <em>username</em>, <em>email</em>, and <em>password</em>.
-      </p>
-      <button
-        id="close-help"
-        class="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300"
-      >
-        Got it!
-      </button>
-    </div>
-
-    <script>
-      // Popup toggles
-      const overlay = document.getElementById("overlay");
-      const createAccountPopup = document.getElementById("create-account-popup");
-      const helpPopup = document.getElementById("help-popup");
-
-      // Open Create Account Popup
-      document.getElementById("open-create-account").addEventListener("click", () => {
-        overlay.style.display = "block";
-        createAccountPopup.style.display = "block";
-      });
-
-      // Open Help Popup
-      document.getElementById("help-button").addEventListener("click", () => {
-        overlay.style.display = "block";
-        helpPopup.style.display = "block";
-      });
-
-      // Close Help Popup
-      document.getElementById("close-help").addEventListener("click", () => {
-        overlay.style.display = "none";
-        helpPopup.style.display = "none";
-      });
-
-      // Close popup when clicking outside of it
-      overlay.addEventListener("click", () => {
-        overlay.style.display = "none";
-        createAccountPopup.style.display = "none";
-        helpPopup.style.display = "none";
-      });
-    </script>
-  </body>
+    <script src="script.js"></script>
+</body>
 </html>
 <!-- partial -->
   <script  src="./script.js"></script>
