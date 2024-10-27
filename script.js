@@ -1,61 +1,72 @@
-// Function to save user to local storage
-function saveUser(username, password) {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    users.push({ username, password });
-    localStorage.setItem('users', JSON.stringify(users));
-}
+// Open IndexedDB
+const request = indexedDB.open("CastifyDB", 1);
 
-// Function to validate user login
-function validateUser(username, password) {
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    return users.some(user => user.username === username && user.password === password);
-}
+request.onupgradeneeded = event => {
+    const db = event.target.result;
+    db.createObjectStore("users", { keyPath: "username" });
+};
 
-// Handle login form submission
-document.getElementById('loginForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+request.onsuccess = () => {
+    const db = request.result;
 
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
-
-    if (validateUser(username, password)) {
-        alert('Login successful! Redirecting...');
-        localStorage.setItem('currentUser', username);
-        window.location.href = 'https://mostbadgeuser.github.io/Castify1.com/'; // Redirect URL
-    } else {
-        alert('Invalid username or password. Please try again.');
+    // Save user in IndexedDB
+    function saveUser(username, password) {
+        const transaction = db.transaction("users", "readwrite");
+        const store = transaction.objectStore("users");
+        store.put({ username, password });
+        transaction.oncomplete = () => alert("Account created successfully!");
+        transaction.onerror = () => alert("Error saving account.");
     }
-});
 
-// Handle signup form submission
-document.getElementById('signupForm').addEventListener('submit', function(event) {
-    event.preventDefault();
+    // Validate user login
+    function validateUser(username, password, callback) {
+        const transaction = db.transaction("users", "readonly");
+        const store = transaction.objectStore("users");
+        const getUser = store.get(username);
 
-    const username = document.getElementById('signupUsername').value;
-    const password = document.getElementById('signupPassword').value;
+        getUser.onsuccess = () => {
+            if (getUser.result && getUser.result.password === password) {
+                callback(true);
+            } else {
+                callback(false);
+            }
+        };
+        getUser.onerror = () => callback(false);
+    }
 
-    // Check if the username already exists
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const userExists = users.some(user => user.username === username);
+    // Handle login submission
+    document.getElementById("loginForm").addEventListener("submit", event => {
+        event.preventDefault();
+        const username = document.getElementById("loginUsername").value;
+        const password = document.getElementById("loginPassword").value;
+        validateUser(username, password, isValid => {
+            if (isValid) {
+                alert("Login successful! Redirecting...");
+                window.location.href = "https://mostbadgeuser.github.io/Castify1.com/";
+            } else {
+                alert("Invalid username or password.");
+            }
+        });
+    });
 
-    if (userExists) {
-        alert('Username already exists. Please choose a different username.');
-    } else {
+    // Handle signup submission
+    document.getElementById("signupForm").addEventListener("submit", event => {
+        event.preventDefault();
+        const username = document.getElementById("signupUsername").value;
+        const password = document.getElementById("signupPassword").value;
         saveUser(username, password);
-        alert('Account created successfully! You can now log in.');
-        document.getElementById('signupBox').style.display = 'none';
-        document.getElementById('loginBox').style.display = 'block';
-    }
-});
+        document.getElementById("signupBox").style.display = "none";
+        document.getElementById("loginBox").style.display = "block";
+    });
 
-// Show signup form
-document.getElementById('showSignup').addEventListener('click', function() {
-    document.getElementById('loginBox').style.display = 'none';
-    document.getElementById('signupBox').style.display = 'block';
-});
+    // Toggle between login and signup forms
+    document.getElementById("showSignup").addEventListener("click", () => {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("signupBox").style.display = "block";
+    });
 
-// Show login form
-document.getElementById('showLogin').addEventListener('click', function() {
-    document.getElementById('signupBox').style.display = 'none';
-    document.getElementById('loginBox').style.display = 'block';
-});
+    document.getElementById("showLogin").addEventListener("click", () => {
+        document.getElementById("signupBox").style.display = "none";
+        document.getElementById("loginBox").style.display = "block";
+    });
+};
